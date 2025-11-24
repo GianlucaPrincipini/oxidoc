@@ -10,9 +10,6 @@ mod storage {
         pub mod reader;
     }
 }
-pub mod utils {
+pub mod cli {
     pub mod cli;
-}
-pub mod executor {
-    pub mod executor;
 }
