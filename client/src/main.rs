@@ -1,7 +1,7 @@
 use clap::Parser;
 use std::io::{self, Write};
-use rusty_db::executor::executor::CommandExecutorFactory;
-use rusty_db::utils::cli::Cli;
+use client::executor::executor::CommandExecutorFactory;
+use client::utils::cli::Cli;
 
 fn main() {
     loop {
