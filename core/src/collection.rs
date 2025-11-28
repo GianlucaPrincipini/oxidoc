@@ -1,7 +1,7 @@
-use json_value::JsonObject;
+use serde_json::Value;
 use std::collections::HashMap;
 
-type Document = JsonObject;
+pub type Document = Value;
 
 #[derive(Debug)]
 pub struct Collection {
@@ -13,11 +13,11 @@ impl Collection {
         Collection { data: HashMap::new() }
     }
     
-    pub fn put(&mut self, key: String, value: JsonObject) {
+    pub fn put(&mut self, key: String, value: Document) {
         self.data.insert(key, value);
     }
 
-    pub fn get(&self, key: &str) -> Option<&JsonObject> {
+    pub fn get(&self, key: &str) -> Option<&Document> {
         self.data.get(key)
     }
 
@@ -33,20 +33,15 @@ impl Collection {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use json_value::JsonValue;
 
-    fn make_json_object(val: &str) -> JsonObject {
-        let mut obj = JsonObject::new();
-        obj.insert("field1".to_string(), JsonValue::String(val.to_string()));
-        obj
+    fn make_json_object(val: &str) -> Document {
+        let mut obj = serde_json::Map::new();
+        obj.insert("field1".to_string(), Value::String(val.to_string()));
+        Value::Object(obj)
     }
 
-    fn json_str_to_object(json: &str) -> JsonObject {
-        let value: json_value::JsonValue = serde_json::from_str(json).expect("Invalid JSON string");
-        match value {
-            json_value::JsonValue::Object(obj) => obj,
-            _ => panic!("Provided string is not a JSON object"),
-        }
+    fn json_str_to_object(json: &str) -> Document {
+        serde_json::from_str(json).expect("Invalid JSON string")
     }
 
     #[test]
