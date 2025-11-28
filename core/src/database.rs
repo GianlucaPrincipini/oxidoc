@@ -1,5 +1,5 @@
-use crate::storage::format::kv::collection::{Collection, Document};
 use std::collections::HashMap;
+use crate::collection::{Collection, Document};
 
 #[derive(Debug)]
 pub struct Database {
