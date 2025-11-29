@@ -10,8 +10,8 @@ pub fn start_listener(address: &str, port: u16) -> Result<(), Error> {
         match stream {
             Ok(mut stream) => {
                 println!("New connection: {}", stream.peer_addr()?);
-                stream.write_all(b"Welcome to rusty_base!\n")?;
-                // Lettura opzionale dei dati inviati dal client
+                stream.write_all(b"Welcome to oxidoc!\n")?;
+                // Lettura dei dati inviati dal oxidoc-client
                 let mut buffer = [0; 1024];
                 let _ = stream.read(&mut buffer)?;
             }
@@ -45,13 +45,13 @@ mod tests {
         let handle = thread::spawn(move || {
             start_listener("127.0.0.1", port).unwrap();
         });
-        // Wait a moment for the server to start
+        // Wait a moment for the oxidoc-server to start
         thread::sleep(Duration::from_millis(100));
         let mut stream = TcpStream::connect(("127.0.0.1", port)).expect("Thread connection failed");
         let mut buf = [0u8; 64];
         let n = stream.read(&mut buf).unwrap();
         let msg = std::str::from_utf8(&buf[..n]).unwrap();
-        assert!(msg.contains("Welcome to rusty_base!"));
+        assert!(msg.contains("Welcome to oxidoc!"));
         drop(stream);
         handle.join().ok();
     }

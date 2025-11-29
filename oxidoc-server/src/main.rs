@@ -1,4 +1,4 @@
-use server::network::listener::start_listener;
+use oxidoc_server::network::listener::start_listener;
 
 const PORT: u16 = 7878;
 const ADDRESS: &str = "127.0.0.1";
