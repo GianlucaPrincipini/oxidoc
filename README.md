@@ -106,3 +106,7 @@ cargo run -p oxidoc-server
 ```bash
 nc localhost 7878
 ```
+
+## 🤝 Contributions
+This project is mostly a personal playground,
+but PRs, discussions and refactors are welcome.
