@@ -4,8 +4,7 @@
 This project is mostly a **devlog**, a learning journey into storage engines, LSM-trees, binary formats, database internals, client/server architectures... 
 and all the fun (and pain) behind building a database from scratch.
 
-It’s not meant to be production-ready.  
-If anything, it's meant to oxidize gracefully. 🧡🦀
+It’s not meant to be production-ready. 
 
 ---
 
@@ -32,7 +31,7 @@ So I merged the two needs, and **oxidoc** was born.
 
 ## 🎯 Project Goals
 
-This project aims to explore — not optimize.  
+This project aims to explore database internals through hands-on implementation.
 The primary goal is to learn by building something real.
 
 The roadmap includes:
@@ -44,9 +43,8 @@ The roadmap includes:
 - a **Memtable + SSTable** LSM-style storage engine
 - examples, devlogs, and transparent documentation
 
-If it becomes a toy database, good.  
-If it becomes a pile of oxidized storage experiments, even better.
-
+If it becomes a (working) toy database, great.
+If not, at least I’ll have learned a lot along the way.
 ---
 
 ## 🏗️ Project Structure
@@ -72,18 +70,10 @@ Provides the internal mechanics:
 
 ### **oxidoc-server**
 Implements:
-
 - the TCP listener
 - per-connection handler
 - minimal protocol parsing
 - routing commands to the core engine
-
-### **oxidoc-cli**
-A minimal CLI that will:
-
-- connect to the server
-- send encoded commands
-- display server responses
 
 ---
 

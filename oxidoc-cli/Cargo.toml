@@ -1,4 +1,4 @@
 [package]
-name = "oxidoc-client"
+name = "oxidoc-cli"
 version = "0.1.0"
 edition = "2024"
