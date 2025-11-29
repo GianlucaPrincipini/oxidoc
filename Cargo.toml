@@ -1,6 +1,6 @@
 [workspace]
 members = [
-    "oxidoc-client",
+    "oxidoc-cli",
     "oxidoc-server",
     "oxidoc-core"
 ]

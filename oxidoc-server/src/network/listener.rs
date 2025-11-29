@@ -11,7 +11,7 @@ pub fn start_listener(address: &str, port: u16) -> Result<(), Error> {
             Ok(mut stream) => {
                 println!("New connection: {}", stream.peer_addr()?);
                 stream.write_all(b"Welcome to oxidoc!\n")?;
-                // Lettura dei dati inviati dal oxidoc-client
+                // Lettura dei dati inviati dal oxidoc-cli
                 let mut buffer = [0; 1024];
                 let _ = stream.read(&mut buffer)?;
             }
