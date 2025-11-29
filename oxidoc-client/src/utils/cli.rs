@@ -53,7 +53,7 @@ pub struct DeleteArgs {
     pub key: String,
 }
 
-/// Struttura principale che rappresenta la CLI di rusty_db.
+/// Struttura principale che rappresenta la CLI di oxidoc.
 #[derive(Parser, Debug, PartialEq, Eq)]
 #[command(author, version, about, long_about = None)]
 pub struct Cli {

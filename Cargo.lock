@@ -177,27 +177,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a1d728cc89cf3aee9ff92b05e62b19ee65a02b5702cff7d5a377e32c6ae29d8d"
 
 [[package]]
-name = "client"
-version = "0.1.0"
-dependencies = [
- "clap",
-]
-
-[[package]]
 name = "colorchoice"
 version = "1.0.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b05b61dc5112cbb17e4b6cd61790d9845d13888356391624cbe7e41efeac1e75"
-
-[[package]]
-name = "core"
-version = "0.1.0"
-dependencies = [
- "axum",
- "bincode",
- "clap",
- "serde_json",
-]
 
 [[package]]
 name = "fnv"
@@ -402,6 +385,34 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "384b8ab6d37215f3c5301a95a4accb5d64aa607f1fcb26a11b5303878451b4fe"
 
 [[package]]
+name = "oxidoc-client"
+version = "0.1.0"
+dependencies = [
+ "clap",
+]
+
+[[package]]
+name = "oxidoc-core"
+version = "0.1.0"
+dependencies = [
+ "axum",
+ "bincode",
+ "clap",
+ "serde_json",
+]
+
+[[package]]
+name = "oxidoc-server"
+version = "0.1.0"
+dependencies = [
+ "axum",
+ "bincode",
+ "clap",
+ "oxidoc-core",
+ "serde_json",
+]
+
+[[package]]
 name = "percent-encoding"
 version = "2.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -506,17 +517,6 @@ dependencies = [
  "itoa",
  "ryu",
  "serde",
-]
-
-[[package]]
-name = "server"
-version = "0.1.0"
-dependencies = [
- "axum",
- "bincode",
- "clap",
- "core",
- "serde_json",
 ]
 
 [[package]]
