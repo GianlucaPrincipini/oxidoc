@@ -15,15 +15,6 @@ impl Database {
         self.db.entry(name).or_insert_with(Collection::new);
     }
 
-    pub fn safe_delete_collection(&mut self, name: &str) -> bool {
-        if self.db.contains_key(name) && self.db.get(name).unwrap().is_empty() {
-            self.db.remove(name);
-            true
-        } else {
-            false
-        }
-    }
-
     pub fn delete_collection(&mut self, name: &str) {
         self.db.remove(name);
     }
@@ -85,17 +76,6 @@ mod tests {
         db.put("test_coll".to_string(), "key1".to_string(), value);
         db.delete("test_coll".to_string(), "key1".to_string());
         assert_eq!(db.get("test_coll", "key1"), None);
-    }
-
-    #[test]
-    fn safe_delete_collection_only_if_empty() {
-        let mut db = Database::new();
-        db.create_collection("test_coll".to_string());
-        assert!(db.safe_delete_collection("test_coll"));
-        db.create_collection("test_coll".to_string());
-        let value = make_json_object("value1");
-        db.put("test_coll".to_string(), "key1".to_string(), value);
-        assert!(!db.safe_delete_collection("test_coll"));
     }
 
     #[test]

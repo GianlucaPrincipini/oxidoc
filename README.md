@@ -10,7 +10,7 @@ It’s not meant to be production-ready.
 
 ## 🧠 Motivation
 
-I’ve worked with NoSQL systems for years (MongoDB, DynamoDB, HBase, etc.), but I always felt there was something missing: I *used* these systems, but I didn’t fully *understand* their internals.
+I’ve worked with NoSQL systems for years (MongoDB, HBase, etc.), but I always felt there was something missing: I *used* these systems, but I didn’t fully *understand* their internals.
 
 Concepts like:
 

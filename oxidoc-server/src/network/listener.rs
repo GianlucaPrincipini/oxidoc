@@ -53,6 +53,5 @@ mod tests {
         let msg = std::str::from_utf8(&buf[..n]).unwrap();
         assert!(msg.contains("Welcome to oxidoc!"));
         drop(stream);
-        handle.join().ok();
     }
 }
