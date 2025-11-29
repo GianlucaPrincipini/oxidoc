@@ -1,16 +1,15 @@
-# 📝 PR Summary
-<!-- Breve descrizione della modifica (1–3 righe). -->
+# PR Summary
+<!-- Brief description of the change (1–3 lines). -->
 
-# 🎯 Perché?
-<!-- Perché hai fatto questa modifica? Fa parte di un devlog? -->
+# Why?
+<!-- Why was this change made? Is it part of a devlog step? -->
 
-# 🔧 Cosa è stato fatto
-<!-- Lista breve delle modifiche principali. -->
+# What Was Done
+<!-- Short list of the main changes. -->
 
-# 🧪 Test
-- [ ] I test passano
-- [ ] Ho verificato manualmente (se necessario)
+# Tests
+- [ ] Tests pass
+- [ ] Manually verified (if needed)
 
-# ⚠️ Note (opzionale)
-<!-- Limitazioni, TODO, follow-up, scelte tecniche da ricordare. -->
-
+# Notes (optional)
+<!-- Limitations, TODOs, follow-up ideas, or technical considerations. -->
