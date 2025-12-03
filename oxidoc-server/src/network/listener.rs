@@ -1,5 +1,6 @@
 use std::io::{Error, Read, Write};
 use std::net::TcpListener;
+use oxidoc_cli::commands::commands::CliCommand;
 
 pub fn start_listener(address: &str, port: u16) -> Result<(), Error> {
     let full_address: String = format!("{address}:{port}");
@@ -13,7 +14,9 @@ pub fn start_listener(address: &str, port: u16) -> Result<(), Error> {
                 stream.write_all(b"Welcome to oxidoc!\n")?;
                 // Read data from the stream (just for demonstration)
                 let mut buffer = [0; 1024];
-                let _ = stream.read(&mut buffer)?;
+                let read = stream.read(&mut buffer)?;
+                let command = CliCommand::from_bytes(&buffer);
+                println!("Received data: {:?}", command);
             }
             Err(e) => {
                 eprintln!("Connection error: {}", e);
