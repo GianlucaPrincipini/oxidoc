@@ -1,5 +1,6 @@
+use crate::network::handler::handle_stream;
 use std::io::{Error, Read, Write};
-use std::net::TcpListener;
+use std::net::{TcpListener, TcpStream};
 
 pub fn start_listener(address: &str, port: u16) -> Result<(), Error> {
     let full_address: String = format!("{address}:{port}");
@@ -8,12 +9,8 @@ pub fn start_listener(address: &str, port: u16) -> Result<(), Error> {
 
     for stream in listener.incoming() {
         match stream {
-            Ok(mut stream) => {
-                println!("New connection: {}", stream.peer_addr()?);
-                stream.write_all(b"Welcome to oxidoc!\n")?;
-                // Read data from the stream (just for demonstration)
-                let mut buffer = [0; 1024];
-                let _ = stream.read(&mut buffer)?;
+            Ok(stream) => {
+                handle_stream(stream)
             }
             Err(e) => {
                 eprintln!("Connection error: {}", e);
@@ -22,6 +19,7 @@ pub fn start_listener(address: &str, port: u16) -> Result<(), Error> {
     }
     Ok(())
 }
+
 
 #[cfg(test)]
 mod tests {

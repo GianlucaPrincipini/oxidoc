@@ -2,6 +2,7 @@
 members = [
     "oxidoc-cli",
     "oxidoc-server",
+    "oxidoc-client",
     "oxidoc-core"
 ]
 
