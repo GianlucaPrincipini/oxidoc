@@ -1,10 +1,10 @@
-use oxidoc_cli::commands::commands::{OxidocCli};
-use oxidoc_cli::commands::executor::CommandExecutorFactory;
 use clap::Parser;
-use std::{io, mem};
-use std::io::{Read, Write};
+use oxidoc_cli::commands::commands::CliCommand;
+use oxidoc_cli::network::network::{read_message, write_message};
+use std::io;
+use std::io::Write;
 use std::net::TcpStream;
-use serde::Serialize;
+use oxidoc_core::handler::Response;
 
 pub struct CommandHandler;
 impl CommandHandler {
@@ -28,14 +28,25 @@ pub fn handle(mut stream: TcpStream) {
             stream.flush().unwrap();
             break;
         }
-        let args = input.split_whitespace().collect::<Vec<_>>();
-        match OxidocCli::try_parse_from(args) {
-            Ok(cmd) => {
+        match CliCommand::parse_command(input) {
+            Ok(command) => {
                 // CommandExecutorFactory::get_executor("dummy".to_string()).execute(cmd.command);
-                stream.write_all(cmd.command.as_bytes().as_slice()).unwrap();
-                stream.read(&mut [0; 64]).unwrap();
+                let bytes = command.as_bytes();
+                write_message(&stream, &bytes).expect("Error writing to stream.");
+                
+                let response  = Response::from_bytes(&*read_message(&stream).unwrap());
+                handle_response(response);
             }
             Err(e) => println!("Invalid command: {}", e),
         }
+    }
+}
+
+fn handle_response(p0: Response) {
+    match p0 {
+        Response::Success(msg) => println!("Success: {}", msg),
+        Response::Doc(doc) => println!("Document: {}", doc.unwrap().to_string()),
+        Response::Ack => println!("Acknowledged."),
+        Response::Failure(err) => println!("Error: {}", err),
     }
 }

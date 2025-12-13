@@ -1,6 +1,7 @@
 use clap::Parser;
+use oxidoc_cli::network::network::read_message;
 use oxidoc_client::network::client::connect_to_server;
-use oxidoc_client::network::handler::handle;
+use oxidoc_client::network::handler::{handle};
 
 const PORT: u16 = 7878;
 const ADDRESS: &str = "127.0.0.1";
@@ -27,6 +28,8 @@ fn main() {
             println!("Failed to connect to server: {}", e);
         }
         Ok(s) => {
+            let welcome_message = read_message(&s).expect("Failed to read handshake message");
+            println!("Server: {}", String::from_utf8_lossy(&welcome_message));
             handle(s)
         }
     }

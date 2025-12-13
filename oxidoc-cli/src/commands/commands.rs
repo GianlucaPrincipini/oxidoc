@@ -1,21 +1,39 @@
-use clap::{Parser, Subcommand, Args as ClapArgs};
+use clap::{Args as ClapArgs, Parser, Subcommand};
+use clap::error::Error;
 use serde::{Deserialize, Serialize};
 
 /// Enum che rappresenta i possibili comandi della CLI.
-#[derive(Subcommand, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Parser, Debug, PartialEq, Eq, Serialize, Deserialize, Clone)]
 pub enum CliCommand {
-    /// Mostra lo stato del database
     Status,
-    /// Inserisce una chiave/valore in una collezione
     Insert(InsertCommandArgs),
-    /// Recupera un valore da una collezione
     Get(GetCommandArgs),
-    /// Elimina una chiave da una collezione
     Delete(DeleteCommandArgs),
+    CreateCollection(CreateCollectionCommandArgs),
+}
+
+impl CliCommand {
+    pub fn parse_command(line: &str) -> Result<CliCommand, Error> {
+        let args = match shell_words::split(line) {
+            Ok(mut args) => {
+                args.insert(0, "prog".to_string());
+                args
+            }
+            Err(e) => return Err(Error::raw(clap::error::ErrorKind::InvalidValue, e.to_string())),
+        };
+        CliCommand::try_parse_from(args)
+    }
+}
+
+#[derive(ClapArgs, Debug, PartialEq, Eq, Serialize, Deserialize, Clone)]
+pub struct CreateCollectionCommandArgs {
+    /// Nome della collezione
+    #[arg(short, long)]
+    pub name: String,
 }
 
 /// Argomenti per il comando Insert
-#[derive(ClapArgs, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(ClapArgs, Debug, PartialEq, Eq, Serialize, Deserialize, Clone)]
 pub struct InsertCommandArgs {
     /// Nome della collezione
     #[arg(short, long)]
@@ -29,7 +47,7 @@ pub struct InsertCommandArgs {
 }
 
 /// Argomenti per il comando Get
-#[derive(ClapArgs, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(ClapArgs, Debug, PartialEq, Eq, Serialize, Deserialize, Clone)]
 pub struct GetCommandArgs {
     /// Nome della collezione
     #[arg(short, long)]
@@ -40,7 +58,7 @@ pub struct GetCommandArgs {
 }
 
 /// Argomenti per il comando Delete
-#[derive(ClapArgs, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(ClapArgs, Debug, PartialEq, Eq, Serialize, Deserialize, Clone)]
 pub struct DeleteCommandArgs {
     /// Nome della collezione
     #[arg(short, long)]
@@ -50,13 +68,6 @@ pub struct DeleteCommandArgs {
     pub key: String,
 }
 
-/// Struttura principale che rappresenta la CLI di oxidoc.
-#[derive(Parser, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[command(author, version, about, long_about = None)]
-pub struct OxidocCli {
-    #[command(subcommand)]
-    pub command: CliCommand,
-}
 
 impl CliCommand {
     /// Serializza la struct in JSON e restituisce i byte risultanti.
@@ -77,10 +88,10 @@ mod tests {
 
     #[test]
     fn parses_insert_command_with_all_args() {
-        let cli = OxidocCli::parse_from([
+        let command = CliCommand::parse_from([
             "prog", "insert", "-c", "mycoll", "-k", "mykey", "-v", "myval"
         ]);
-        assert_eq!(cli.command, CliCommand::Insert(InsertCommandArgs {
+        assert_eq!(command, CliCommand::Insert(InsertCommandArgs {
             collection: "mycoll".to_string(),
             key: "mykey".to_string(),
             value: "myval".to_string(),
@@ -89,10 +100,10 @@ mod tests {
 
     #[test]
     fn parses_get_command_with_args() {
-        let cli = OxidocCli::parse_from([
+        let command = CliCommand::parse_from([
             "prog", "get", "-c", "mycoll", "-k", "mykey"
         ]);
-        assert_eq!(cli.command, CliCommand::Get(GetCommandArgs {
+        assert_eq!(command, CliCommand::Get(GetCommandArgs {
             collection: "mycoll".to_string(),
             key: "mykey".to_string(),
         }));
@@ -100,10 +111,10 @@ mod tests {
 
     #[test]
     fn parses_delete_command_with_args() {
-        let cli = OxidocCli::parse_from([
+        let command = CliCommand::parse_from([
             "prog", "delete", "-c", "mycoll", "-k", "mykey"
         ]);
-        assert_eq!(cli.command, CliCommand::Delete(DeleteCommandArgs {
+        assert_eq!(command, CliCommand::Delete(DeleteCommandArgs {
             collection: "mycoll".to_string(),
             key: "mykey".to_string(),
         }));
@@ -111,8 +122,8 @@ mod tests {
 
     #[test]
     fn parses_status_command() {
-        let cli = OxidocCli::parse_from(["prog", "status"]);
-        assert_eq!(cli.command, CliCommand::Status);
+        let command = CliCommand::parse_from(["prog", "status"]);
+        assert_eq!(command, CliCommand::Status);
     }
 
     #[test]

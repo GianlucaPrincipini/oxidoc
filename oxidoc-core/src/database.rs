@@ -1,5 +1,5 @@
-use std::collections::HashMap;
 use crate::collection::{Collection, Document};
+use std::collections::HashMap;
 
 #[derive(Debug)]
 pub struct Database {
@@ -7,7 +7,7 @@ pub struct Database {
 }
 
 impl Database {
-    pub fn new() -> Database {
+    pub fn initialize() -> Database {
         Database { db: HashMap::new() }
     }
 
@@ -48,7 +48,7 @@ mod tests {
 
     #[test]
     fn create_collection_and_put_and_get() {
-        let mut db = Database::new();
+        let mut db = Database::initialize();
         db.create_collection("test_coll".to_string());
         let value = make_json_object("value1");
         db.put("test_coll".to_string(), "key1".to_string(), value.clone());
@@ -57,20 +57,20 @@ mod tests {
 
     #[test]
     fn get_nonexistent_collection_returns_none() {
-        let db = Database::new();
+        let db = Database::initialize();
         assert_eq!(db.get("missing", "key1"), None);
     }
 
     #[test]
     fn get_nonexistent_key_returns_none() {
-        let mut db = Database::new();
+        let mut db = Database::initialize();
         db.create_collection("test_coll".to_string());
         assert_eq!(db.get("test_coll", "missing"), None);
     }
 
     #[test]
     fn delete_key_removes_value() {
-        let mut db = Database::new();
+        let mut db = Database::initialize();
         db.create_collection("test_coll".to_string());
         let value = make_json_object("value1");
         db.put("test_coll".to_string(), "key1".to_string(), value);
@@ -80,7 +80,7 @@ mod tests {
 
     #[test]
     fn delete_collection_always_removes() {
-        let mut db = Database::new();
+        let mut db = Database::initialize();
         db.create_collection("test_coll".to_string());
         let value = make_json_object("value1");
         db.put("test_coll".to_string(), "key1".to_string(), value);
