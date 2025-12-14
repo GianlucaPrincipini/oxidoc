@@ -29,7 +29,6 @@ pub fn handle(mut stream: TcpStream) {
         }
         match CliCommand::parse_command(input) {
             Ok(command) => {
-                // CommandExecutorFactory::get_executor("dummy".to_string()).execute(cmd.command);
                 let bytes = command.as_bytes();
                 write_message(&stream, &bytes).expect("Error writing to stream.");
                 
