@@ -17,7 +17,7 @@ fn main() {
     let args: Vec<String> = std::env::args().collect();
     let cli_args = ApplicationArgs::try_parse_from(args);
     let server = match cli_args {
-        Err(e) => {
+        Err(_) => {
             format!("{ADDRESS}:{PORT}")
         }
         Ok(a) => a.server

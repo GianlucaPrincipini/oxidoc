@@ -1,4 +1,4 @@
-use clap::{Args as ClapArgs, Parser, Subcommand};
+use clap::{Args as ClapArgs, Parser};
 use clap::error::Error;
 use serde::{Deserialize, Serialize};
 

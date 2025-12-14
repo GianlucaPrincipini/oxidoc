@@ -1,4 +1,3 @@
-use clap::Parser;
 use oxidoc_cli::commands::commands::CliCommand;
 use oxidoc_cli::network::network::{read_message, write_message};
 use std::io;
