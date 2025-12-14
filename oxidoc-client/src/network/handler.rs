@@ -3,7 +3,7 @@ use oxidoc_cli::network::network::{read_message, write_message};
 use std::io;
 use std::io::Write;
 use std::net::TcpStream;
-use oxidoc_core::handler::Response;
+use oxidoc_core::response::Response;
 
 pub struct CommandHandler;
 impl CommandHandler {

@@ -1,9 +1,8 @@
-use std::error::Error;
 use oxidoc_cli::commands::commands::CliCommand;
 use oxidoc_cli::network::network::{read_message, write_message};
-use oxidoc_core::handler::execute_command;
+use oxidoc_core::executor::execute_command;
+use oxidoc_core::executor::Response::Failure;
 use std::net::TcpStream;
-use oxidoc_core::handler::Response::Failure;
 
 pub enum HandlerType {
     Server,
