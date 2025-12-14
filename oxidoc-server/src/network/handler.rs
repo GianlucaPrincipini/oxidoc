@@ -1,8 +1,8 @@
 use oxidoc_cli::commands::commands::CliCommand;
 use oxidoc_cli::network::network::{read_message, write_message};
 use oxidoc_core::executor::execute_command;
-use oxidoc_core::executor::Response::Failure;
 use std::net::TcpStream;
+use oxidoc_core::response::Response::Failure;
 
 pub enum HandlerType {
     Server,
@@ -17,7 +17,7 @@ pub fn handle_stream(stream: TcpStream) -> () {
     loop {
         let buffer = match read_message(&stream) {
             Err(e) => {
-                println!("Error reading from stream: {}", e);
+                eprintln!("Error reading from stream: {}", e);
                 break;
             }
             Ok(buffer) => buffer,
@@ -30,17 +30,17 @@ pub fn handle_stream(stream: TcpStream) -> () {
             _ => {
                 let command = CliCommand::from_bytes(&buffer);
                 println!("Received data: {:?}", command);
-                match execute_command(command, &mut db) {
-                    Ok(response) => {
-                        write_message(&stream, response.as_bytes().as_ref()).expect("Failed to send response");
-                    }
-                    Err(e) => {
-                        let error_message = format!("Error processing command: {}", e);
-                        let response = Failure(error_message);
-                        write_message(&stream, response.as_bytes().as_ref()).expect("Failed to send error message");
-                    }
-                }
+                let response = execute_command(command, &mut db)
+                    .unwrap_or_else(|e| Failure(format!("Error processing command: {}", e)));
+                
+                send_response(&stream, &response);
             }
         }
+    }
+}
+
+fn send_response(stream: &TcpStream, response: &oxidoc_core::response::Response) {
+    if let Err(e) = write_message(stream, response.as_bytes().as_ref()) {
+        eprintln!("Failed to send response: {}", e);
     }
 }

@@ -1,4 +1,3 @@
-use crate::collection::Document;
 use crate::database::Database;
 use crate::response::Response;
 use oxidoc_cli::commands::commands::CliCommand;
@@ -44,6 +43,7 @@ mod tests {
     use super::*;
     use crate::database::Database;
     use oxidoc_cli::commands::commands::{DeleteCommandArgs, GetCommandArgs, InsertCommandArgs};
+    use crate::collection::Document;
 
     #[test]
     fn insert_returns_success_response() {

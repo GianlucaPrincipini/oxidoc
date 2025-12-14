@@ -6,7 +6,7 @@ pub fn write_message<W: Write>(mut stream: W, message: &[u8]) -> Result<(), Erro
     stream.write_all(message)
 }
 pub fn read_message<R: Read>(mut stream: R) -> Result<Vec<u8>, Error> {
-    let mut len_buffer = [0u8; 8]; // Instantiate a buffer for length, 0u8 means 0 initialized
+    let mut len_buffer = [0u8; 8]; 
     stream.read_exact(&mut len_buffer)?;
     let mut buffer = vec![0u8; u64::from_be_bytes(len_buffer) as usize];
     stream.read_exact(&mut buffer)?;
@@ -63,7 +63,7 @@ mod tests {
             let mut cursor = Cursor::new(&mut buffer);
             write_message(&mut cursor, message).unwrap();
         }
-        // La lunghezza (3) in big endian + il payload
+        // 3 character length message payload buffer
         let mut expected = Vec::new();
         expected.extend_from_slice(&3u64.to_be_bytes());
         expected.extend_from_slice(message);

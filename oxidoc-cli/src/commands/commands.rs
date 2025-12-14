@@ -2,7 +2,7 @@ use clap::{Args as ClapArgs, Parser};
 use clap::error::Error;
 use serde::{Deserialize, Serialize};
 
-/// Enum che rappresenta i possibili comandi della CLI.
+/// CLI Commands
 #[derive(Parser, Debug, PartialEq, Eq, Serialize, Deserialize, Clone)]
 pub enum CliCommand {
     Status,
@@ -28,57 +28,48 @@ impl CliCommand {
 
 #[derive(ClapArgs, Debug, PartialEq, Eq, Serialize, Deserialize, Clone)]
 pub struct CreateCollectionCommandArgs {
-    /// Nome della collezione
     #[arg(short, long)]
     pub name: String,
 }
 
 #[derive(ClapArgs, Debug, PartialEq, Eq, Serialize, Deserialize, Clone)]
 pub struct DeleteCollectionCommandArgs {
-    /// Nome della collezione
     #[arg(short, long)]
     pub name: String,
 }
 
-/// Argomenti per il comando Insert
 #[derive(ClapArgs, Debug, PartialEq, Eq, Serialize, Deserialize, Clone)]
 pub struct InsertCommandArgs {
-    /// Nome della collezione
     #[arg(short, long)]
     pub collection: String,
-    /// Chiave
+    
     #[arg(short, long)]
     pub key: String,
-    /// Valore
+    
     #[arg(short, long)]
     pub value: String,
 }
 
-/// Argomenti per il comando Get
 #[derive(ClapArgs, Debug, PartialEq, Eq, Serialize, Deserialize, Clone)]
 pub struct GetCommandArgs {
-    /// Nome della collezione
     #[arg(short, long)]
     pub collection: String,
-    /// Chiave
+    
     #[arg(short, long)]
     pub key: String,
 }
 
-/// Argomenti per il comando Delete
 #[derive(ClapArgs, Debug, PartialEq, Eq, Serialize, Deserialize, Clone)]
 pub struct DeleteCommandArgs {
-    /// Nome della collezione
     #[arg(short, long)]
     pub collection: String,
-    /// Chiave
+    
     #[arg(short, long)]
     pub key: String,
 }
 
 
 impl CliCommand {
-    /// Serializza la struct in JSON e restituisce i byte risultanti.
     pub fn as_bytes(&self) -> Vec<u8> {
         serde_json::to_vec(self).expect("Serialization failed")
     }
