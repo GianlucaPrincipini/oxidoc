@@ -1,7 +1,7 @@
 use std::error::Error;
 use oxidoc_cli::commands::commands::CliCommand;
 use oxidoc_cli::network::network::{read_message, write_message};
-use oxidoc_core::handler::database_handler;
+use oxidoc_core::handler::execute_command;
 use std::net::TcpStream;
 use oxidoc_core::handler::Response::Failure;
 
@@ -31,7 +31,7 @@ pub fn handle_stream(stream: TcpStream) -> () {
             _ => {
                 let command = CliCommand::from_bytes(&buffer);
                 println!("Received data: {:?}", command);
-                match database_handler(command, &mut db) {
+                match execute_command(command, &mut db) {
                     Ok(response) => {
                         write_message(&stream, response.as_bytes().as_ref()).expect("Failed to send response");
                     }

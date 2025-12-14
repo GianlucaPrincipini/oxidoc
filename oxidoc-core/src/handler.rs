@@ -57,7 +57,7 @@ impl Response<'_> {
     }
 }
 
-pub fn database_handler(command: CliCommand, db: &'_ mut Database) -> Result<Response<'_>, Error> {
+pub fn execute_command(command: CliCommand, db: &'_ mut Database) -> Result<Response<'_>, Error> {
     match command {
         CliCommand::Insert(args) => {
             let clone = args.clone();
@@ -115,7 +115,7 @@ mod tests {
             key: "key1".to_string(),
             value: r#"{"field":"value1"}"#.to_string(),
         });
-        let response = database_handler(insert_cmd, &mut db);
+        let response = execute_command(insert_cmd, &mut db);
         match response {
             Ok(Response::Success(value)) => {
                 println!("{value}");
@@ -137,7 +137,7 @@ mod tests {
             collection: "test_coll".to_string(),
             key: "key1".to_string(),
         });
-        let response = database_handler(get_cmd, &mut db);
+        let response = execute_command(get_cmd, &mut db);
         match response {
             Ok(Response::Doc(Some(doc))) => {
                 let expected: Document = serde_json::from_str(r#"{"field":"value1"}"#).unwrap();
@@ -151,7 +151,7 @@ mod tests {
             collection: "test_coll".to_string(),
             key: "key1".to_string(),
         });
-        let response = database_handler(delete_cmd, &mut db);
+        let response = execute_command(delete_cmd, &mut db);
         match response {
             Ok(Response::Ack) => (),
             _ => panic!("Expected Empty response for Delete"),
@@ -162,7 +162,7 @@ mod tests {
             collection: "test_coll".to_string(),
             key: "key1".to_string(),
         });
-        let response = database_handler(get_cmd, &mut db);
+        let response = execute_command(get_cmd, &mut db);
         match response {
             Ok(Response::Doc(None)) => (),
             _ => panic!("Expected Doc response with None for deleted key"),
