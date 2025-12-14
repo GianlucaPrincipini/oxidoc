@@ -82,6 +82,14 @@ pub fn database_handler(command: CliCommand, db: &'_ mut Database) -> Result<Res
         CliCommand::Status => Ok(Response::Success(
             "Database status: Operational.".to_string(),
         )),
+        CliCommand::DeleteCollection(args) => {
+            let clone = args.clone();
+            db.delete_collection(&args.name);
+            Ok(Response::Success(format!(
+                "Collection {:?} deleted.",
+                clone
+            )))
+        },
         CliCommand::CreateCollection(args) => {
             let clone = args.clone();
             db.create_collection(args.name);

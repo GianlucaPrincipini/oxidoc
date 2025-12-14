@@ -10,6 +10,7 @@ pub enum CliCommand {
     Get(GetCommandArgs),
     Delete(DeleteCommandArgs),
     CreateCollection(CreateCollectionCommandArgs),
+    DeleteCollection(CreateCollectionCommandArgs),
 }
 
 impl CliCommand {
@@ -27,6 +28,13 @@ impl CliCommand {
 
 #[derive(ClapArgs, Debug, PartialEq, Eq, Serialize, Deserialize, Clone)]
 pub struct CreateCollectionCommandArgs {
+    /// Nome della collezione
+    #[arg(short, long)]
+    pub name: String,
+}
+
+#[derive(ClapArgs, Debug, PartialEq, Eq, Serialize, Deserialize, Clone)]
+pub struct DeleteCollectionCommandArgs {
     /// Nome della collezione
     #[arg(short, long)]
     pub name: String,
