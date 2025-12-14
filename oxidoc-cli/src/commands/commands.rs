@@ -1,5 +1,6 @@
-use clap::{Args as ClapArgs, Parser};
 use clap::error::Error;
+use clap::error::ErrorKind::InvalidValue;
+use clap::{Args as ClapArgs, Parser};
 use serde::{Deserialize, Serialize};
 
 /// CLI Commands
@@ -15,13 +16,9 @@ pub enum CliCommand {
 
 impl CliCommand {
     pub fn parse_command(line: &str) -> Result<CliCommand, Error> {
-        let args = match shell_words::split(line) {
-            Ok(mut args) => {
-                args.insert(0, "prog".to_string());
-                args
-            }
-            Err(e) => return Err(Error::raw(clap::error::ErrorKind::InvalidValue, e.to_string())),
-        };
+        let mut args = shell_words::split(line)
+            .map_err(|e| Error::raw(InvalidValue, e.to_string()))?;
+        args.insert(0, "prog".to_string());
         CliCommand::try_parse_from(args)
     }
 }
