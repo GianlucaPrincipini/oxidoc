@@ -40,10 +40,6 @@ mod tests {
         Value::Object(obj)
     }
 
-    fn json_str_to_object(json: &str) -> Document {
-        serde_json::from_str(json).expect("Invalid JSON string")
-    }
-
     #[test]
     fn put_and_get_value() {
         let mut collection = Collection::new();

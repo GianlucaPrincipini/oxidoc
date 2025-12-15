@@ -4,3 +4,5 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+oxidoc-cli = { path = "../oxidoc-cli" }
+oxidoc-core = { path = "../oxidoc-core" }
